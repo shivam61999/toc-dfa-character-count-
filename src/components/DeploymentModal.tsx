@@ -140,7 +140,7 @@ vercel`}
                 <button
                   onClick={() =>
                     copyToClipboard(
-                      'git init\ngit add .\ngit commit -m "feat: complete TOC TAE DFA Character Count Validator"\ngit branch -M main\ngit remote add origin https://github.com/YOUR_USERNAME/toc-dfa-character-count.git\ngit push -u origin main',
+                      'git init\ngit add .\ngit commit -m "feat: complete TOC TAE DFA Character Count Validator"\ngit branch -M main\ngit remote add origin https://github.com/shivam61999/toc-dfa-character-count.git\ngit push -u origin main',
                       'git-push'
                     )
                   }
@@ -155,7 +155,7 @@ vercel`}
 git add .
 git commit -m "feat: complete TOC TAE DFA Character Count Validator"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/toc-dfa-character-count.git
+git remote add origin https://github.com/shivam61999/toc-dfa-character-count.git
 git push -u origin main`}
               </pre>
             </div>

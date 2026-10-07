@@ -113,7 +113,7 @@ No DFA with fewer than 6 states can recognize $L$.
 ### Steps
 ```bash
 # 1. Clone repository
-git clone https://github.com/YOUR_USERNAME/toc-dfa-character-count.git
+git clone https://github.com/shivam61999/toc-dfa-character-count.git
 cd toc-dfa-character-count
 
 # 2. Install dependencies
@@ -154,7 +154,7 @@ This repository is pre-configured with a GitHub Actions workflow (`.github/workf
    git add .
    git commit -m "feat: initial TOC TAE DFA validator release"
    git branch -M main
-   git remote add origin https://github.com/YOUR_USERNAME/toc-dfa-character-count.git
+   git remote add origin https://github.com/shivam61999/toc-dfa-character-count.git
    git push -u origin main
    ```
 2. In your GitHub repository:
