@@ -11,6 +11,7 @@ import { BatchTestingSuite } from './components/BatchTestingSuite';
 import { AcademicGuide } from './components/AcademicGuide';
 import { RandomStringModal } from './components/RandomStringModal';
 import { DeploymentModal } from './components/DeploymentModal';
+import { InstallAppModal } from './components/InstallAppModal';
 import { simulateDFA, DFA_STATES } from './utils/dfaEngine';
 import type { StateId, VerificationResult } from './types/automata';
 import {
@@ -23,6 +24,8 @@ import {
   ListFilter,
   Eye,
   Info,
+  Download,
+  WifiOff,
 } from 'lucide-react';
 
 export default function App() {
@@ -36,7 +39,61 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<'simulator' | 'suite' | 'academic'>('simulator');
   const [isRandomModalOpen, setIsRandomModalOpen] = useState<boolean>(false);
   const [isDeployModalOpen, setIsDeployModalOpen] = useState<boolean>(false);
+  const [isInstallModalOpen, setIsInstallModalOpen] = useState<boolean>(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [isInstalled, setIsInstalled] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return (
+        window.matchMedia('(display-mode: standalone)').matches ||
+        (window.navigator as any).standalone === true
+      );
+    }
+    return false;
+  });
+  const [isOffline, setIsOffline] = useState<boolean>(() => !navigator.onLine);
   const [selectedStateInfo, setSelectedStateInfo] = useState<StateId | null>(null);
+
+  // Listen for PWA install and offline events
+  useEffect(() => {
+    const handleBeforeInstall = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+
+    const handleAppInstalled = () => {
+      setIsInstalled(true);
+      setDeferredPrompt(null);
+    };
+
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstall);
+    window.addEventListener('appinstalled', handleAppInstalled);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  const handleInstallClick = () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult: any) => {
+        if (choiceResult.outcome === 'accepted') {
+          setIsInstalled(true);
+        }
+        setDeferredPrompt(null);
+      });
+    } else {
+      setIsInstallModalOpen(true);
+    }
+  };
 
   const timerRef = useRef<number | null>(null);
 
@@ -222,6 +279,17 @@ export default function App() {
               </button>
             </div>
 
+            {/* Install Offline App Button */}
+            <button
+              onClick={handleInstallClick}
+              className="flex items-center gap-1.5 text-xs bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-3 py-2 rounded-xl shadow-lg shadow-indigo-600/20 transition"
+              title="Install on Android or Desktop for 100% offline access"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">{isInstalled ? 'App Installed' : 'Install App'}</span>
+              <span className="sm:hidden">Install</span>
+            </button>
+
             {/* Deploy Guide Button */}
             <button
               onClick={() => setIsDeployModalOpen(true)}
@@ -236,6 +304,19 @@ export default function App() {
 
       {/* ---------------- Main Container ---------------- */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6">
+        {/* Offline Status Alert Banner */}
+        {isOffline && (
+          <div className="bg-emerald-950/60 border border-emerald-500/50 p-3 rounded-xl flex items-center justify-between gap-3 text-xs text-emerald-300">
+            <div className="flex items-center gap-2">
+              <WifiOff className="w-4 h-4 text-emerald-400 shrink-0" />
+              <span><b>Offline Mode Active:</b> You are currently offline. All DFA computations, simulations, and test cases are running locally with zero internet required!</span>
+            </div>
+            <span className="text-[10px] bg-emerald-900/60 text-emerald-200 px-2 py-0.5 rounded border border-emerald-700 font-mono">
+              Offline Ready
+            </span>
+          </div>
+        )}
+
         {/* String Input Bar & Presets */}
         <section className="bg-slate-900/90 rounded-2xl p-4 sm:p-5 border border-slate-800 shadow-xl space-y-3.5">
           <div className="flex flex-wrap items-center justify-between gap-2">
@@ -490,6 +571,14 @@ export default function App() {
       <DeploymentModal
         isOpen={isDeployModalOpen}
         onClose={() => setIsDeployModalOpen(false)}
+      />
+
+      <InstallAppModal
+        isOpen={isInstallModalOpen}
+        onClose={() => setIsInstallModalOpen(false)}
+        deferredPrompt={deferredPrompt}
+        onInstallClick={handleInstallClick}
+        isInstalled={isInstalled}
       />
 
       {/* ---------------- Footer ---------------- */}

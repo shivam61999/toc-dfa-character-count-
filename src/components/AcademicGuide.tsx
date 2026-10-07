@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BookOpen, GraduationCap, ChevronDown, ChevronUp, Download, CheckCircle, Award } from 'lucide-react';
+import { BookOpen, GraduationCap, ChevronDown, ChevronUp, Download, CheckCircle, Award, Dna, Radio, Cpu, Layers } from 'lucide-react';
 
 export const AcademicGuide: React.FC = () => {
   const [openVivaId, setOpenVivaId] = useState<number | null>(0);
@@ -164,6 +164,63 @@ M = M₁ × M₂ accepts L(M₁) ∩ L(M₂), requiring |Q₁| × |Q₂| = 3 × 
             Since regular languages are closed under intersection, we build the cross-product DFA. 
             M₁ has 3 states and M₂ has 2 states. The product DFA requires exactly 3 × 2 = 6 states.
           </p>
+        </div>
+      </div>
+
+      {/* Real-World Engineering & Industrial Applications */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-slate-100 flex items-center gap-2">
+            <span className="text-emerald-400">⚡</span>
+            <span>Real-World Engineering & Industrial Applications</span>
+          </h3>
+          <span className="text-[11px] text-slate-400 font-mono">Viva High-Yield Topic</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+          {/* Card 1: Bioinformatics */}
+          <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800 space-y-1.5 hover:border-slate-700 transition">
+            <div className="flex items-center gap-2 text-rose-400 font-bold">
+              <Dna className="w-4 h-4" />
+              <span>Bioinformatics Codons</span>
+            </div>
+            <p className="text-slate-400 text-[11px] leading-relaxed">
+              mRNA is translated by ribosomes in triplets of 3 nucleotides (codons). Automata verify <b className="text-slate-200">N ≡ 0 mod 3</b> reading frames to prevent fatal <b className="text-rose-300">frameshift mutations</b> in genomic pipelines.
+            </p>
+          </div>
+
+          {/* Card 2: Parity Checking */}
+          <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800 space-y-1.5 hover:border-slate-700 transition">
+            <div className="flex items-center gap-2 text-sky-400 font-bold">
+              <Radio className="w-4 h-4" />
+              <span>Even Parity Checking</span>
+            </div>
+            <p className="text-slate-400 text-[11px] leading-relaxed">
+              The condition <b className="text-slate-200">Nb ≡ 0 mod 2</b> is standard even-parity error detection used in hardware serial protocols (UART, RS-232, PCIe) and ECC memory to detect single-bit corruption.
+            </p>
+          </div>
+
+          {/* Card 3: VLSI Clock Dividers */}
+          <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800 space-y-1.5 hover:border-slate-700 transition">
+            <div className="flex items-center gap-2 text-amber-400 font-bold">
+              <Cpu className="w-4 h-4" />
+              <span>VLSI Clock Dividers</span>
+            </div>
+            <p className="text-slate-400 text-[11px] leading-relaxed">
+              This 6-state automaton maps directly to a synchronous dual-clock divider FSM in Verilog/VHDL, synthesizing synchronized <b className="text-slate-200">1/3rd</b> and <b className="text-slate-200">1/2nd</b> frequency clock phases in microcontrollers.
+            </p>
+          </div>
+
+          {/* Card 4: Compiler Memory Alignment */}
+          <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800 space-y-1.5 hover:border-slate-700 transition">
+            <div className="flex items-center gap-2 text-indigo-400 font-bold">
+              <Layers className="w-4 h-4" />
+              <span>Compiler Alignment</span>
+            </div>
+            <p className="text-slate-400 text-[11px] leading-relaxed">
+              Compilers (LLVM, GCC) use modulo DFAs in lexers to verify 32-bit (4-byte) or 64-bit (8-byte) instruction memory alignment and modular indentation grammar blocks.
+            </p>
+          </div>
         </div>
       </div>
 
