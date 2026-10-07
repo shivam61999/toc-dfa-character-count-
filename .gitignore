@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local Seminar and Excel Artifacts (kept local on Desktop)
+*.xlsx
+*.pptx
+*.csv
+generate_*.py
